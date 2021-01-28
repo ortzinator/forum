@@ -14,23 +14,39 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Scripts -->
+        <script src="{{ asset('js/manifest.js') }}" defer></script>
+        <script src="{{ asset('js/vendor.js') }}" defer></script>
         <script src="{{ asset('js/app.js') }}" defer></script>
+
+        <script>
+            window.App = {!! json_encode([
+                'signedIn' => Auth::check(),
+                'user' => Auth::user(),
+            ]) !!}
+        </script>
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
+        <div id="app" class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-
+            
             <!-- Page Heading -->
-            <header class="bg-white shadow">
+            <header class="bg-white shadow mb-4">
                 <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>
             </header>
 
+            <flash message="{{session('flash')}}"></flash>
+
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                <div class="w-full max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6 border-b border-gray-200">
+                        {{ $slot }}
+                    </div>
+                </div>
             </main>
+            
         </div>
     </body>
 </html>
