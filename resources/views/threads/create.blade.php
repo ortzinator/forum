@@ -13,7 +13,11 @@
                 <select name="channel_id" id="channel_id">
                     <option value="">Choose one...</option>
                     @foreach ($channels as $channel)
-                        <option value="{{ $channel->id }}">{{ $channel->name }}</option>
+                        <option value="{{ $channel->id }}" 
+                            @if(old('channel_id') == $channel->id) selected @endif
+                            >
+                            {{ $channel->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
