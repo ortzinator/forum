@@ -16,8 +16,7 @@ class ParticipateInThreadTest extends TestCase
     
     public function test_auth_user_can_post_new_threads()
     {
-        $this->withoutExceptionHandling();
-        $this->be($user = User::factory()->create());
+        $this->signIn();
 
         $thread = Thread::factory()->create();
         $reply = Reply::factory()->create();
@@ -110,5 +109,19 @@ class ParticipateInThreadTest extends TestCase
 
         $findThread = Thread::find($threadId);
         $this->assertNotNull($findThread);
+    }
+
+    public function test_replies_that_contain_spam_may_not_be_created()
+    {
+        $this->signIn();
+
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->create([
+            'body' => 'Yahoo Customer Support'
+        ]);
+
+        $this->expectException(\Exception::class);
+
+        $this->post($thread->path() . '/replies', $reply->toArray());
     }
 }

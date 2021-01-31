@@ -11,7 +11,7 @@
         "@tailwindcss/forms": "^0.2.1",
         "@tailwindcss/typography": "^0.3.1",
         "autoprefixer": "^9.8.6",
-        "axios": "^0.19",
+        "axios": "^0.15.3",
         "cross-env": "^7.0",
         "jquery": "^3.5.1",
         "laravel-mix": "^6.0.0-beta.17",
@@ -24,6 +24,5 @@
         "vue": "^2.6.12",
         "vue-loader": "^15.9.6",
         "vue-template-compiler": "^2.6.12"
-    },
-    "dependencies": {}
+    }
 }

@@ -13,7 +13,13 @@
             <article class="py-5">
                 <div class="flex flex-row">
                     <h4 class="flex-grow">
-                        <a class="underline" href="{{ $thread->path() }}">{{ $thread->title }}</a>
+                        <a class="underline" href="{{ $thread->path() }}">
+                            @if (Auth::check() && $thread->hasUpdatesFor(Auth::user()))
+                                <strong>{{ $thread->title }}</strong>
+                            @else
+                                {{ $thread->title }}
+                            @endif
+                        </a>
                     </h4>
                     <strong>{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</strong>
                 </div>

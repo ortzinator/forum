@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
@@ -67,7 +68,7 @@ class ThreadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Spam $spam)
     {
         $this->validate($request, [
             'title' => 'required',
@@ -75,8 +76,10 @@ class ThreadController extends Controller
             'channel_id' => 'required|exists:channels,id'
         ]);
 
+        $spam->detect(request('body'));
+
         $thread = Thread::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => Auth::id(),
             'channel_id' => $request['channel_id'],
             'title' => $request['title'],
             'body' => $request['body']
@@ -94,31 +97,11 @@ class ThreadController extends Controller
      */
     public function show($channelId, Thread $thread)
     {
+        if (Auth::check()) {
+            Auth::user()->read($thread);
+        }
         // return $thread;
         return view('threads.show')->with(['thread' => $thread]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Thread $thread)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Thread $thread)
-    {
-        //
     }
 
     /**

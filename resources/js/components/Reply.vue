@@ -87,19 +87,28 @@ export default {
 
     methods: {
         update() {
-            axios.patch('/replies/' + this.data.id, {
-                body: this.body
-            });
-
-            this.editing = false;
+            axios
+                .patch('/replies/' + this.data.id, {
+                    body: this.body
+                })
+                .then(data => {
+                    this.editing = false;
+                    flash('Your reply was updated');
+                })
+                .catch(error => {
+                    flash(error.response.data, 'error');
+                });
         },
         destroy() {
-            axios.delete('/replies/' + this.data.id);
-
-            this.$emit('deleted', this.data.id);
-            // $(this.$el).fadeOut(300, () => {
-            //     flash('Your reply has been deleted');
-            // });
+            axios
+                .delete('/replies/' + this.data.id)
+                .then(data => {
+                    this.$emit('deleted', this.data.id);
+                    flash('Your reply has been deleted');
+                })
+                .catch(error => {
+                    flash(error.response.data, 'error');
+                });
         }
     }
 };

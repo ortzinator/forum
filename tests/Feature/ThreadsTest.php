@@ -53,18 +53,6 @@ class ThreadsTest extends TestCase
             ->assertSee($thread->user->name);
     }
 
-    public function test_thread_can_add_reply()
-    {
-        $thread = Thread::factory()->create();
-        $reply = Reply::factory()->make();
-
-        $thread->addReply([
-            'body' => 'Foobar',
-            'user_id' => 1
-        ]);
-
-        $this->assertCount(1, $thread->replies);
-    }
     public function test_thread_belongs_to_channel()
     {
         $thread = Thread::factory()->create();

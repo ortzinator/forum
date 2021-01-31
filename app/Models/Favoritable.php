@@ -34,7 +34,7 @@ trait Favoritable
     public function isFavorited()
     {
         if (Auth::guest()) { return false; }
-        return !! $this->favorites->where('user_id', Auth::user()->id)->count();
+        return !! $this->favorites->where('user_id', Auth::id())->count();
     }
 
     public function getIsFavoritedAttribute()

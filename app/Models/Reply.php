@@ -18,6 +18,15 @@ class Reply extends Model
 
     protected $appends = ['favoritesCount', 'isFavorited'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($reply) {
+            $reply->thread->touch();
+        });
+    }
+
     /**
      * A reply has an owner.
      *

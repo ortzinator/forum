@@ -2,8 +2,10 @@
 
 namespace Tests;
 
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Carbon\Carbon;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -13,6 +15,13 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         $this->withoutExceptionHandling();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        
+        Carbon::setTestNow();
     }
 
     public function signIn($options = null)
@@ -30,6 +39,13 @@ abstract class TestCase extends BaseTestCase
     public function assertMissing(Model $model)
     {
         $this->assertFalse($model->exists, 'The given model exists');
+        return $this;
+    }
+
+    public function goForwardADay()
+    {
+        Carbon::setTestNow(Carbon::now()->add(CarbonInterval::days(4)));
+
         return $this;
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <div
-        class="bg-blue-200 border border-blue-300 font-medium max-w-6xl mx-auto my-4 p-4 rounded-lg fixed bottom-5 right-5"
+        class="alert"
+        :class="`alert-${level}`"
         x-data="{ open: true }"
         x-show="open"
         role="alert"
@@ -12,7 +13,8 @@
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                class="stroke-current text-black h-6 w-6 inline mx-2"
+                class="stroke-current h-6 w-6 inline mr-2"
+                v-if="level == 'success'"
             >
                 <path
                     stroke-linecap="round"
@@ -21,8 +23,22 @@
                     d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
             </svg>
-            <div class="mx-2 font-bold">Success!</div>
-            <div>{{ body }}</div>
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                class="stroke-current h-6 w-6 inline mr-2"
+                v-if="level == 'error'"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+            </svg>
+            <div v-text="body"></div>
         </div>
     </div>
 </template>
@@ -33,6 +49,7 @@ export default {
     data() {
         return {
             body: this.message,
+            level: 'success',
             show: false
         };
     },
@@ -41,14 +58,15 @@ export default {
             this.flash(this.message);
         }
 
-        window.events.$on('flash', message => {
-            this.flash(message);
+        window.events.$on('flash', data => {
+            this.flash(data);
         });
     },
 
     methods: {
-        flash(message) {
-            this.body = message;
+        flash(data) {
+            this.body = data.message;
+            this.level = data.level;
             this.show = true;
             this.hide();
         },
