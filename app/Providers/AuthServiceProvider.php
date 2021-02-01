@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::before(function ($user)
         {
-            if ($user->name == 'Brian Ortiz') return true;
+            // if ($user->name == 'Brian Ortiz') return true;
         });
     }
 }

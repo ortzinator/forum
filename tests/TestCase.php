@@ -44,7 +44,7 @@ abstract class TestCase extends BaseTestCase
 
     public function goForwardADay()
     {
-        Carbon::setTestNow(Carbon::now()->add(CarbonInterval::days(4)));
+        Carbon::setTestNow(Carbon::now()->addDays(1));
 
         return $this;
     }

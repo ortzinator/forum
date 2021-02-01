@@ -6,6 +6,7 @@ use App\Models\Reply;
 use App\Models\Thread;
 use App\Inspections\Spam;
 use App\Rules\SpamFree;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +31,9 @@ class ReplyController extends Controller
      */
     public function store($channelId, Thread $thread)
     {
+        if (Gate::denies('create', new Reply)) {
+            return response('You are posting too much. Take a break :)', 422);
+        }
         try {
             request()->validate(['body' => ['required', new SpamFree]]);
 

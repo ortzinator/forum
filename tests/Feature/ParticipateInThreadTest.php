@@ -34,16 +34,17 @@ class ParticipateInThreadTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    public function test_a_reply_requires_a_body()
-    {
-        $this->withExceptionHandling()->signIn();
+    // public function test_a_reply_requires_a_body()
+    // {
+    //     $this->withExceptionHandling();
+    //     $this->signIn();
 
-        $thread = Thread::factory()->create();
-        $reply = Reply::factory()->makeOne(['body' => NULL]);
+    //     $thread = Thread::factory()->create();
+    //     $reply = Reply::factory()->makeOne(['body' => NULL]);
 
-        $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSessionHasErrors('body');
-    }
+    //     $this->post($thread->path() . '/replies', $reply->toArray())
+    //         ->assertSessionHasErrors('body');
+    // }
 
     public function test_unauth_users_cannot_delete_replies()
     {
@@ -119,9 +120,29 @@ class ParticipateInThreadTest extends TestCase
         $reply = Reply::factory()->create([
             'body' => 'Yahoo Customer Support'
         ]);
+        $cleanReply = Reply::factory()->create([
+            'body' => "Yahoo! I'm Alive!"
+        ]);
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
 
-        $this->expectException(\Exception::class);
+        $this->postJson($thread->path() . '/replies', $cleanReply->toArray())
+            ->assertStatus(201);
+    }
 
-        $this->post($thread->path() . '/replies', $reply->toArray());
+    public function test_user_may_only_reply_once_per_minute()
+    {
+        $this->signIn();
+
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->create([
+            'body' => 'A reply'
+        ]);
+
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(201);
+
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
     }
 }
