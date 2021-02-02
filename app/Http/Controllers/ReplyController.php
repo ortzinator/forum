@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Inspections\Spam;
@@ -25,31 +26,16 @@ class ReplyController extends Controller
      * Persist a new reply
      * @param integer $channelId
      * @param Thread $thread
-     * @param \App\Inspections\Spam $spam
+     * @param CreatePostRequest $form
      * 
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-        if (Gate::denies('create', new Reply)) {
-            return response('You are posting too much. Take a break :)', 422);
-        }
-        try {
-            request()->validate(['body' => ['required', new SpamFree]]);
-
-            $reply = $thread->addReply([
-                'body' => request('body'),
-                'user_id' => Auth::id()
-            ]);
-        } catch (\Exception $ex) {
-            return response('Sorry, your reply could not be saved at this time', 422);
-        }
-
-        if (request()->expectsJson()) {
-            return $reply->load('user');
-        }
-
-        return redirect($thread->path());
+        return $thread->addReply([
+            'body' => request('body'),
+            'user_id' => Auth::id()
+        ])->load('user');
     }
 
     public function destroy(Reply $reply)

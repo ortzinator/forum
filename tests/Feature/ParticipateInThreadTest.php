@@ -34,17 +34,17 @@ class ParticipateInThreadTest extends TestCase
             ->assertRedirect('/login');
     }
 
-    // public function test_a_reply_requires_a_body()
-    // {
-    //     $this->withExceptionHandling();
-    //     $this->signIn();
+    public function test_a_reply_requires_a_body()
+    {
+        $this->withExceptionHandling();
+        $this->signIn();
 
-    //     $thread = Thread::factory()->create();
-    //     $reply = Reply::factory()->makeOne(['body' => NULL]);
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->makeOne(['body' => NULL]);
 
-    //     $this->post($thread->path() . '/replies', $reply->toArray())
-    //         ->assertSessionHasErrors('body');
-    // }
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
 
     public function test_unauth_users_cannot_delete_replies()
     {
@@ -114,6 +114,7 @@ class ParticipateInThreadTest extends TestCase
 
     public function test_replies_that_contain_spam_may_not_be_created()
     {
+        $this->withExceptionHandling();
         $this->signIn();
 
         $thread = Thread::factory()->create();
@@ -132,6 +133,7 @@ class ParticipateInThreadTest extends TestCase
 
     public function test_user_may_only_reply_once_per_minute()
     {
+        $this->withExceptionHandling();
         $this->signIn();
 
         $thread = Thread::factory()->create();
@@ -143,6 +145,6 @@ class ParticipateInThreadTest extends TestCase
             ->assertStatus(201);
 
         $this->postJson($thread->path() . '/replies', $reply->toArray())
-            ->assertStatus(422);
+            ->assertStatus(429);
     }
 }
