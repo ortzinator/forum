@@ -6,8 +6,6 @@ use App\Http\Requests\CreatePostRequest;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Inspections\Spam;
-use App\Models\User;
-use App\Notifications\YouWereMentioned;
 use App\Rules\SpamFree;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
@@ -34,20 +32,10 @@ class ReplyController extends Controller
      */
     public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-        $reply = $thread->addReply([
+        return $thread->addReply([
             'body' => request('body'),
             'user_id' => Auth::id()
         ])->load('user');
-
-        preg_match_all('/(?<=@)[^\s\.@]+/', $reply->body, $matches);
-
-        foreach ($matches[0] as $name) {
-            $user = User::whereName($name)->first();
-
-            $user?->notify(new YouWereMentioned($reply));
-        }
-
-        return $reply;
     }
 
     public function destroy(Reply $reply)
