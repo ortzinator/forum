@@ -14,7 +14,7 @@
         <div id="activity">
             @forelse ($activities as $date => $activity)
                 <div class="mb-5 text-2xl">{{ $date }}</div>
-                @foreach ($activity as $record)
+                @foreach ($activity->filter() as $record)
                     <x-dynamic-component :component="$record->type" :profile-user="$profileUser" :activity="$record" />
                 @endforeach
             @empty

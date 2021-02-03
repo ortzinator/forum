@@ -51,7 +51,7 @@ Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store'])
 Route::delete('/replies/{reply}/favorites', [FavoritesController::class, 'destroy']);
 
 //Users
-Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile');
 Route::get('/api/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
 
 //Notifications

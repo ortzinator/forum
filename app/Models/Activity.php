@@ -21,6 +21,7 @@ class Activity extends Model
         return $user->activity()
             ->latest()
             ->with('subject')
+            ->whereHas('subject')
             ->take($take)
             ->get()
             ->groupBy(function ($activity) {

@@ -11,7 +11,7 @@
                 <div id="threadop" class="bg-gray-200 p-5 border border-gray-300 rounded-lg">
                     <div class="flex justify-between mb-8">
                         <div class="">
-                            <a href="{{ route('profile.show', $thread->user->name) }}">{{ $thread->user->name }}</a>
+                            <a href="{{ route('profile', $thread->user->name) }}">{{ $thread->user->name }}</a>
                         </div>
                         @can('update', $thread)    
                             <div class="">

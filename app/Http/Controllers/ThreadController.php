@@ -40,12 +40,13 @@ class ThreadController extends Controller
             $threads = $threads->orderBy('replies_count', 'desc');
         }
 
-
-        $threads = $threads->get();
-
         if (request()->wantsJson()) {
+            $threads = $threads->get();
             return $threads;
         }
+
+        $threads = $threads->paginate(2);
+        // dd($threads);
 
         return view('threads.index')
             ->with('threads', $threads)

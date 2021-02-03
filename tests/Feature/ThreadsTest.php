@@ -102,7 +102,7 @@ class ThreadsTest extends TestCase
         
         $threadWithZeroReplies = Thread::factory()->create();            
 
-        $this->get('threads?popular=1')
+        $this->getJson('threads?popular=1')
             ->assertSeeInOrder([
                 $threadWithThreeReplies->title,
                 $threadWithOneReply->title,
@@ -169,6 +169,7 @@ class ThreadsTest extends TestCase
         Reply::factory(2)->create(['thread_id' => $thread->id]);
         
         $response = $this->getJson('/threads?unanswered=1')->json();
+        // dd($response);
         $this->assertCount(1, $response);
     }
 }
