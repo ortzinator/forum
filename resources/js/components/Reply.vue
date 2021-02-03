@@ -17,25 +17,26 @@
 
         <div class="mb-5" v-cloak>
             <div v-if="editing" class="v-cloak--hidden">
-                <textarea
-                    name=""
-                    id=""
-                    rows="10"
-                    class="w-full"
-                    v-model="body"
-                ></textarea>
-                <button
-                    @click="editing = false"
-                    class="bg-gray-400 px-2 py-1 text-white text-xs"
-                >
-                    Cancel
-                </button>
-                <button
-                    @click="update"
-                    class="bg-blue-400 px-2 py-1 text-white text-xs"
-                >
-                    Submit
-                </button>
+                <form @submit.prevent="update">
+                    <textarea
+                        name=""
+                        id=""
+                        rows="10"
+                        class="w-full"
+                        v-model="body"
+                        required
+                    ></textarea>
+                    <button
+                        @click="editing = false"
+                        class="bg-gray-400 px-2 py-1 text-white text-xs"
+                        type="button"
+                    >
+                        Cancel
+                    </button>
+                    <button class="bg-blue-400 px-2 py-1 text-white text-xs">
+                        Submit
+                    </button>
+                </form>
             </div>
             <div v-else v-text="body"></div>
         </div>
