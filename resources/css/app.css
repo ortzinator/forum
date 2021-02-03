@@ -35,4 +35,25 @@
     .alert-error {
         @apply bg-red-100 border-red-300 text-red-900;
     }
+    .tribute-container {
+        @apply absolute top-0 left-0 h-auto max-h-52 max-w-sm overflow-auto block z-auto;
+    }
+    .tribute-container ul {
+        @apply mt-2 p-0 bg-gray-100;
+    }
+    .tribute-container li {
+        @apply p-5 cursor-pointer;
+    }
+    .tribute-container li.highlight {
+        @apply bg-gray-200;
+    }
+    .tribute-container li span {
+        @apply font-bold;
+    }
+    .tribute-container li.no-match {
+        @apply cursor-default;
+    }
+    .tribute-container .menu-highlighted {
+        @apply font-bold;
+    }
 }

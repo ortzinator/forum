@@ -22,13 +22,23 @@ class MentionUserTest extends TestCase
 
         $thread = Thread::factory()->create();
 
-        $reply = Reply::factory()->create([
+        $reply = Reply::factory()->make([
             'body' => '@JaneDoe look at this @Goober'
         ]);
 
         $this->postJson($thread->path() . '/replies', $reply->toArray());
 
-        $this->assertCount(1, $jane->notifications);
+        $this->assertCount(1, $jane->fresh()->notifications);
+    }
 
+    public function test_it_can_search_mentioned_users()
+    {
+        User::factory()->create(['name' => 'JohnDoe']);
+        User::factory()->create(['name' => 'JohnDoe2']);
+        User::factory()->create(['name' => 'JaneDoe']);
+
+        $results = $this->getJson('/api/users?name=john');
+
+        $this->assertCount(2, $results->json());
     }
 }

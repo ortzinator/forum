@@ -9,6 +9,8 @@ use App\Models\Reply;
 use App\Models\User;
 use Carbon\Carbon;
 
+use function PHPUnit\Framework\assertEquals;
+
 class ReplyTest extends TestCase
 {
     use RefreshDatabase;
@@ -29,5 +31,19 @@ class ReplyTest extends TestCase
         $reply->created_at = Carbon::now()->subMonth();
         
         $this->assertFalse($reply->wasJustPublished());
+    }
+
+    public function test_it_can_detect_all_mentioned_users_in_the_body()
+    {
+        $reply = new Reply(['body' => '@JaneDoe want to talk to @JohnDoe']);
+
+        $this->assertEquals(['JaneDoe', 'JohnDoe'], $reply->mentionedUsers());
+    }
+
+    public function test_it_wraps_mentioned_usernames_in_the_body_within_a_tags()
+    {
+        $reply = new Reply(['body' => 'Hello @JaneDoe.']);
+
+        $this->assertEquals('Hello <a href="/profile/JaneDoe">@JaneDoe</a>.', $reply->body);
     }
 }

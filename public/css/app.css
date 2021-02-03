@@ -2121,6 +2121,47 @@ select {
   color: rgba(127, 29, 29, var(--tw-text-opacity));
 }
 
+.tribute-container {
+  display: block;
+  height: auto;
+  max-height: 13rem;
+  max-width: 24rem;
+  overflow: auto;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: auto;
+}
+
+.tribute-container ul {
+  --tw-bg-opacity: 1;
+  background-color: rgba(243, 244, 246, var(--tw-bg-opacity));
+  margin-top: 0.5rem;
+  padding: 0px;
+}
+
+.tribute-container li {
+  cursor: pointer;
+  padding: 1.25rem;
+}
+
+.tribute-container li.highlight {
+  --tw-bg-opacity: 1;
+  background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
+}
+
+.tribute-container li span {
+  font-weight: 700;
+}
+
+.tribute-container li.no-match {
+  cursor: default;
+}
+
+.tribute-container .menu-highlighted {
+  font-weight: 700;
+}
+
 .space-y-0 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-y-reverse: 0;
   margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));

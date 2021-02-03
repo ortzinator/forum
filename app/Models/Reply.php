@@ -19,6 +19,8 @@ class Reply extends Model
 
     protected $appends = ['favoritesCount', 'isFavorited'];
 
+    // protected $touches = ['thread'];
+
     protected static function boot()
     {
         parent::boot();
@@ -51,5 +53,17 @@ class Reply extends Model
     public function wasJustPublished()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());
+    }
+
+    public function mentionedUsers()
+    {
+        preg_match_all('/@([A-zÀ-ú_\-]*)/', $this->body, $matches);
+
+        return $matches[1];
+    }
+
+    public function setBodyAttribute($body)
+    {
+        $this->attributes['body'] = preg_replace('/@([A-zÀ-ú_\-]*)/', '<a href="/profile/$1">$0</a>', $body);
     }
 }
