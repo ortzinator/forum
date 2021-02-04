@@ -1,5 +1,5 @@
 <template>
-    <dropdown v-if="notifications">
+    <dropdown v-if="notifications.length">
         <template v-slot:trigger>
             <button class="flex items-center mx-5">
                 <svg
@@ -19,7 +19,7 @@
             </button>
         </template>
         <ul class="p-5 space-y-2">
-            <li v-for="notif in notifications">
+            <li v-for="notif in notifications" v-bind:key="notif.id">
                 <a
                     class="underline"
                     :href="notif.data.link"

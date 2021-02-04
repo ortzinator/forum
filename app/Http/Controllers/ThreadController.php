@@ -45,7 +45,7 @@ class ThreadController extends Controller
             return $threads;
         }
 
-        $threads = $threads->paginate(2);
+        $threads = $threads->paginate(20);
         // dd($threads);
 
         return view('threads.index')
