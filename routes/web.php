@@ -53,7 +53,7 @@ Route::delete('/replies/{reply}/favorites', [FavoritesController::class, 'destro
 //Users
 Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile');
 Route::get('/api/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
-Route::post('/api/users/{user}/avatar', [\App\Http\Controllers\Api\UserAvatarController::class, 'store']);
+Route::post('/api/users/{user}/avatar', [\App\Http\Controllers\Api\UserAvatarController::class, 'store'])->name('avatar');
 
 //Notifications
 Route::delete('/profile/{user}/notifications/{notification}', [UserNotificationsController::class, 'destroy']);

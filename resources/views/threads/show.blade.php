@@ -12,6 +12,7 @@
                     <div class="flex justify-between mb-8">
                         <div class="">
                             <a href="{{ route('profile', $thread->user->name) }}">{{ $thread->user->name }}</a>
+                            <x-avatar :user="$thread->user"/>
                         </div>
                         @can('update', $thread)    
                             <div class="">
