@@ -9,15 +9,7 @@
             <small>signed up {{ $profileUser->created_at->diffForHumans() }}</small>
         </h1>
 
-        @can('update', $profileUser)
-            <form method="POST" action="{{ route('avatar', $profileUser) }}" enctype="multipart/form-data">
-                @csrf
-                <input type="file" name="avatar" id="" class="block">
-                <button type="submit" class="text-white rounded-lg px-5 py-2 bg-blue-800">Add Avatar</button>
-            </form>
-        @endcan
-
-        <div><x-avatar :user="$profileUser"/></div>
+        <avatar-form :user="{{$profileUser}}"></avatar-form>
 
         <h2 class="text-2xl leading-loose mb-7 border-b">Activity Feed</h2>
 

@@ -17,17 +17,15 @@
                         </button>
                     </template>
 
-                    <x-dropdown-link :href="route('threads.index')" class="v-cloak--hidden">
-                        {{ __('All Threads') }}
-                    </x-dropdown-link>
-                    <x-dropdown-link href="/threads?unanswered=1" class="v-cloak--hidden">
-                        {{ __('Unanswered Threads') }}
-                    </x-dropdown-link>
+                    <x-dropdown-item class="v-cloak--hidden">
+                        <a href="{{route('threads.index')}}">{{ __('All Threads') }}</a>
+                    </x-dropdown-item>
+                    <x-dropdown-item class="v-cloak--hidden">
+                        <a href="/threads?unanswered=1">{{ __('Unanswered Threads') }}</a>
+                    </x-dropdown-item>
                     
                 </dropdown>
-                {{-- <x-dropdown-link :href="route('threads.create')" class="v-cloak--hidden">
-                    {{ __('Create Thread') }}
-                </x-dropdown-link> --}}
+                
                 <a class="" href="{{ route('threads.create') }}">{{ __('Create Thread') }}</a>
 
                 <dropdown>
@@ -41,9 +39,9 @@
                     </template>
 
                     @foreach(\App\Models\Channel::all() as $channel)
-                        <x-dropdown-link :href="$channel->path()" class="v-cloak--hidden">
-                            {{ $channel->name }}
-                        </x-dropdown-link>
+                        <x-dropdown-item class="v-cloak--hidden">
+                            <a href="{{$channel->path()}}">{{ $channel->name }}</a>
+                        </x-dropdown-item>
                     @endforeach
 
                 </dropdown>
@@ -66,21 +64,24 @@
                             </button>
                         </template>
 
-                        <x-dropdown-link :href="route('dashboard')" class="v-cloak--hidden">
-                            {{ __('Dashboard') }}
-                        </x-dropdown-link>
+                        <x-dropdown-item class="v-cloak--hidden">
+                            <a href="{{route('profile')}}">{{ __('Profile') }}</a>
+                        </x-dropdown-item>
 
-                        <li>
+                        <x-dropdown-item class="v-cloak--hidden">
+                            <a href="{{route('dashboard')}}">{{ __('Dashboard') }}</a>
+                        </x-dropdown-item>
+
+                        <x-dropdown-item>
                             <form method="POST" action="{{ route('logout') }}">
-                                <x-dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                                    {{ __('Logout') }}
-                                </x-dropdown-link>
                                 @csrf
-                                
+                                <a href="route('logout')"
+                                    onclick="event.preventDefault();
+                                    this.closest('form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
                             </form>
-                        </li>
+                        </x-dropdown-item>
                     </dropdown>
                 @endauth
             </div>

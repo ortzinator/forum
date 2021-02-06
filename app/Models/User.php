@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -72,5 +73,13 @@ class User extends Authenticatable
     public function lastReply()
     {
         return $this->hasOne(Reply::class)->latest();
+    }
+
+    public function getAvatarPathAttribute($avatar)
+    {
+        if (is_null($avatar)) {
+            return asset('/images/avatars/tortilla.jpg');
+        }
+        return Storage::url($avatar);
     }
 }

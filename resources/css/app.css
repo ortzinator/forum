@@ -26,8 +26,11 @@
 }
 
 @layer components {
+    .alert-container {
+        @apply flex items-center justify-center w-screen fixed top-5;
+    }
     .alert {
-        @apply border fixed bottom-5 right-5 font-medium max-w-6xl mx-auto my-4 p-4 rounded-lg;
+        @apply flex border font-medium max-w-6xl p-4 rounded-lg;
     }
     .alert-success {
         @apply bg-blue-100 border-blue-300 text-blue-900;

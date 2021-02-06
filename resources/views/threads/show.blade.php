@@ -10,9 +10,9 @@
             <div id="thread" class="flex flex-grow flex-col px-5">
                 <div id="threadop" class="bg-gray-200 p-5 border border-gray-300 rounded-lg">
                     <div class="flex justify-between mb-8">
-                        <div class="">
-                            <a href="{{ route('profile', $thread->user->name) }}">{{ $thread->user->name }}</a>
-                            <x-avatar :user="$thread->user"/>
+                        <div class="flex items-center space-x-4">
+                            <x-avatar class="border border-gray-300 shadow-md" :user="$thread->user"/>
+                            <a href="{{ route('profile', $thread->user->name) }}" class="text-2xl">{{ $thread->user->name }}</a>
                         </div>
                         @can('update', $thread)    
                             <div class="">

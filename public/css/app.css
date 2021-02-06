@@ -2088,19 +2088,22 @@ select {
   color: #db2777;
 }
 
+.alert-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 1.25rem;
+  width: 100vw;
+}
+
 .alert {
   border-radius: 0.5rem;
   border-width: 1px;
+  display: flex;
   font-weight: 500;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: auto;
-  margin-right: auto;
   max-width: 72rem;
   padding: 1rem;
-  position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
 }
 
 .alert-success {

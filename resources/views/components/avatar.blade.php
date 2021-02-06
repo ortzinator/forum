@@ -4,8 +4,4 @@
     'user'
 ])
 
-@if($user->avatar_path)
-    <img src="{{ asset('storage/' . $user->avatar_path) }}" alt="Avatar for user {{ $user->name }}" width="{{$width}}" height="{{$height}}">
-@else
-    <img src="{{ asset('images/tortilla.jpg') }}" alt="Default avatar" width="{{$width}}" height="{{$height}}">
-@endif
+<img src="{{ $user->avatar_path }}" alt="Avatar for user {{ $user->name }}" width="{{$width}}" height="{{$height}}" {{ $attributes }}>

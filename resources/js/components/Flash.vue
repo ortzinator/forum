@@ -1,13 +1,12 @@
 <template>
     <div
-        class="alert"
-        :class="`alert-${level}`"
+        class="alert-container"
         x-data="{ open: true }"
         x-show="open"
         role="alert"
         v-show="show"
     >
-        <div class="flex">
+        <div class="alert" :class="`alert-${level}`">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"

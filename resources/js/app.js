@@ -6,6 +6,7 @@ import Flash from './components/Flash.vue';
 import Thread from './components/Thread.vue';
 import Paginator from './components/Paginator.vue';
 import UserNotifications from './components/UserNotifications.vue';
+import AvatarForm from './components/AvatarForm.vue';
 
 window.Vue = Vue;
 window.Vue.prototype.authorize = function(handler) {
@@ -23,6 +24,7 @@ Vue.component('dropdown', Dropdown);
 Vue.component('flash', Flash);
 Vue.component('paginator', Paginator);
 Vue.component('user-notifications', UserNotifications);
+Vue.component('avatar-form', AvatarForm);
 
 Vue.component('thread-view', Thread);
 
