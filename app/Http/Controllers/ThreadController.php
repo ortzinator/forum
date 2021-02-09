@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class ThreadController extends Controller
 {
@@ -40,6 +41,8 @@ class ThreadController extends Controller
             $threads = $threads->orderBy('replies_count', 'desc');
         }
 
+        $trending = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 5));
+
         if (request()->wantsJson()) {
             $threads = $threads->get();
             return $threads;
@@ -50,6 +53,7 @@ class ThreadController extends Controller
 
         return view('threads.index')
             ->with('threads', $threads)
+            ->with('trending', $trending)
             ->with('channelName', $channel->name);
     }
 
@@ -100,7 +104,12 @@ class ThreadController extends Controller
         if (Auth::check()) {
             Auth::user()->read($thread);
         }
-        // return $thread;
+        
+        Redis::zincrby('trending_threads', 1, json_encode([
+            'title' => $thread->title,
+            'path' => $thread->path()
+        ]));
+
         return view('threads.show')->with(['thread' => $thread]);
     }
 

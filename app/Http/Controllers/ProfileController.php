@@ -12,11 +12,11 @@ class ProfileController extends Controller
 {
     public function show(User $user)
     {
-        if (!$user->exists && Auth::check()) {
+        if (!$user->exists) {
+            if (!Auth::check()) {
+                return redirect('/login');
+            }
             $user = Auth::user();
-        }
-        else {
-            return redirect('/login');
         }
 
         return view('profiles.show')
