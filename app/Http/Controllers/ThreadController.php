@@ -6,6 +6,7 @@ use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
 use App\Rules\SpamFree;
+use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
@@ -20,7 +21,7 @@ class ThreadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Channel $channel, Request $request)
+    public function index(Channel $channel, Request $request, Trending $trending)
     {
         if ($channel->exists) {
             $threads = $channel->threads()->latest(); //TODO: Pagination
@@ -41,19 +42,16 @@ class ThreadController extends Controller
             $threads = $threads->orderBy('replies_count', 'desc');
         }
 
-        $trending = array_map('json_decode', Redis::zrevrange('trending_threads', 0, 5));
-
         if (request()->wantsJson()) {
             $threads = $threads->get();
             return $threads;
         }
 
         $threads = $threads->paginate(20);
-        // dd($threads);
 
         return view('threads.index')
             ->with('threads', $threads)
-            ->with('trending', $trending)
+            ->with('trending', $trending->get())
             ->with('channelName', $channel->name);
     }
 
@@ -99,16 +97,13 @@ class ThreadController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show($channelId, Thread $thread, Trending $trending)
     {
         if (Auth::check()) {
             Auth::user()->read($thread);
         }
         
-        Redis::zincrby('trending_threads', 1, json_encode([
-            'title' => $thread->title,
-            'path' => $thread->path()
-        ]));
+        $trending->push($thread);
 
         return view('threads.show')->with(['thread' => $thread]);
     }

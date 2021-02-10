@@ -15,16 +15,18 @@
             </div>
             {{ $threads->withQueryString()->links() }}
         </div>
-        <div class="">
-            <div class="border p-5 w-60">
-                <h3 class="text-xl">Trending Threads</h3>
-
-                @foreach ($trending as $thread)
+        @if (count($trending))
+            <div class="">
+                <div class="border p-5 w-60">
+                    <h3 class="text-xl">Trending Threads</h3>
+                    
+                    @foreach ($trending as $thread)
                     <li>
                         <a href="{{ $thread->path }}">{{ $thread->title }}</a>
                     </li>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 </x-app-layout>
