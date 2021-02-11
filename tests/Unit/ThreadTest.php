@@ -141,4 +141,15 @@ class ThreadTest extends TestCase
 
         $this->assertNotTrue($one->equalTo($two));
     }
+
+    public function test_a_thread_records_each_visit()
+    {
+        $thread = Thread::factory()->create();
+
+        $this->assertEquals(0, $thread->visits);
+
+        $this->get($thread->path());
+
+        $this->assertEquals(1, $thread->fresh()->visits);
+    }
 }

@@ -19,6 +19,7 @@ class CreateThreadsTable extends Migration
             $table->unsignedInteger('channel_id')->nullable(false);
             $table->string('title', 100)->nullable(false);
             $table->text('body')->nullable(false);
+            $table->unsignedBigInteger('visits')->default(0);
             $table->timestamps();
         });
     }

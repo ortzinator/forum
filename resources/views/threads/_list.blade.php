@@ -10,10 +10,13 @@
                     @endif
                 </a>
             </h4>
-            <span>{{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}</span>
         </div>
         <div class="text-xl">Created by: <a class="text-blue-800" href="{{ route('profile', $thread->user) }}">{{ $thread->user->name }}</a></div class="text-xl">
         <div class="prose lg:prose-lg my-2 max-w-none">{{ $thread->body }}</div>
+        <div class="text-sm mt-4 text-gray-400">
+            {{ $thread->replies_count }} {{ Str::plural('reply', $thread->replies_count) }}
+            | {{ $thread->visits }} {{ Str::plural('visit', $thread->replies_count) }}
+        </div>
     </article>
 @empty
     <p>No threads found</p>

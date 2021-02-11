@@ -16,7 +16,7 @@
             {{ $threads->withQueryString()->links() }}
         </div>
         @if (count($trending))
-            <div class="">
+            <div>
                 <div class="border p-5 w-60">
                     <h3 class="text-xl">Trending Threads</h3>
                     
