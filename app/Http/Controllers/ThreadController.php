@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Redis;
 class ThreadController extends Controller
 {
     public function __construct() {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware(['auth', 'verified'])->except(['index', 'show']);
     }
     /**
      * Display a listing of the resource.
@@ -62,6 +62,7 @@ class ThreadController extends Controller
      */
     public function create()
     {
+        dd('foo');
         return view('threads.create');
     }
 

@@ -95,6 +95,7 @@ class ThreadTest extends TestCase
     {
         $this->signIn();
 
+        /** @var User $user */
         $user = Auth::user();
 
         $this->assertTrue($this->thread->hasUpdatesFor($user));
@@ -110,6 +111,7 @@ class ThreadTest extends TestCase
     {
         $this->signIn();
 
+        /** @var User $user */
         $user = Auth::user();
 
         $user->read($this->thread);

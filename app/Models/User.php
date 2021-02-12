@@ -9,7 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -65,6 +65,13 @@ class User extends Authenticatable
         return sprintf("users.%s.visits.%s", $this->id, $thread->id);
     }
 
+    /**
+     * Mark the thread as read for the user
+     * 
+     * @param \App\Models\Thread $thread
+     * 
+     * @return void
+     */
     public function read($thread)
     {
         cache()->forever($this->visitedThreadCacheKey($thread), Carbon::now());
