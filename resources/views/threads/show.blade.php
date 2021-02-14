@@ -29,7 +29,6 @@
 
                 <replies :data="{{$thread->replies}}" @added="repliesCount++" @removed="repliesCount--"></replies>
 
-                {{-- <div id="pagination">{{ $replies->links() }}</div> --}}
             </div>
             <div id="thread-meta" class="flex-none w-64 h-64 border border-gray-200 p-5 rounded-lg">
                 <p class="mb-2">Thread was published {{ $thread->created_at->diffForHumans() }}

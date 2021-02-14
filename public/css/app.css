@@ -769,6 +769,15 @@ select {
   display: none;
 }
 
+a {
+  --tw-text-opacity: 1;
+  color: rgba(30, 64, 175, var(--tw-text-opacity));
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 .container {
   width: 100%;
 }

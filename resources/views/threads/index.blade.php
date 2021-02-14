@@ -18,13 +18,14 @@
         @if (count($trending))
             <div>
                 <div class="border p-5 w-60">
-                    <h3 class="text-xl">Trending Threads</h3>
-                    
-                    @foreach ($trending as $thread)
-                    <li>
-                        <a href="{{ $thread->path }}">{{ $thread->title }}</a>
-                    </li>
-                    @endforeach
+                    <h3 class="text-xl mb-3">Trending Threads</h3>
+                    <ul class="text-sm list-none divide-y-2 divide-gray-100">
+                        @foreach ($trending as $thread)
+                            <li>
+                                <a href="{{ $thread->path }}">{{ $thread->title }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
         @endif
