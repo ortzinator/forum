@@ -53,20 +53,6 @@ class ThreadsTest extends TestCase
             ->assertSee($thread->user->name);
     }
 
-    public function test_thread_belongs_to_channel()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertInstanceOf('App\Models\Channel', $thread->channel);
-    }
-
-    public function test_a_thread_returns_a_path()
-    {
-        $thread = Thread::factory()->create();
-
-        $this->assertEquals("/threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
-    }
-    
     public function test_a_user_can_filter_threads_by_channel()
     {
         $channel = Channel::factory()->create();
