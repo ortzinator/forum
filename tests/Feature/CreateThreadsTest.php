@@ -14,22 +14,23 @@ class CreateThreadsTest extends TestCase
     
     public function test_authenticated_user_can_create_thread()
     {
-        $this->actingAs(User::factory()->create());
-        $channel = Channel::factory()->create();
-        $thread = Thread::factory()->makeOne(['channel_id' => $channel->id]);
+        $this->signIn();
+        $thread = Thread::factory()->makeOne();
 
-        $this->followingRedirects()
-            ->post('/threads', $thread->toArray())
+        $this->post(route('threads.store'), $thread->toArray());
+        // dd($thread->fresh()->slug);
+        
+        $this->get($thread->path())
             ->assertSee($thread->body);
     }
 
     public function test_guest_cannot_create_thread()
     {
         $this->withExceptionHandling();
-        $this->post('/threads')
+        $this->post(route('threads.store'))
             ->assertRedirect('/login');
 
-        $this->get('/threads/create')
+        $this->get(route('threads.create'))
             ->assertRedirect('/login');
     }
 
@@ -52,7 +53,7 @@ class CreateThreadsTest extends TestCase
             ->assertSessionHasErrors('channel_id');
     }
 
-    public function test_auth_sers_must_first_verify_email_before_creating_thread()
+    public function test_auth_users_must_first_verify_email_before_creating_thread()
     {
         $this->publishThread([], ['email_verified_at' => NULL])
             ->assertRedirect('/verify-email');
@@ -63,6 +64,6 @@ class CreateThreadsTest extends TestCase
         $this->withExceptionHandling()->signIn($userOverrides);
 
         $thread = Thread::factory()->makeOne($threadOverrides);
-        return $this->post('/threads', $thread->toArray());
+        return $this->post(route('threads.store'), $thread->toArray());
     }
 }

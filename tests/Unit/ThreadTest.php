@@ -42,11 +42,11 @@ class ThreadTest extends TestCase
         $this->assertInstanceOf('App\Models\Channel', $thread->channel);
     }
 
-    public function test_a_thread_returns_a_path()
+    public function test_a_thread_has_a_path()
     {
         $thread = Thread::factory()->create();
 
-        $this->assertEquals("/threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
+        $this->assertEquals("/threads/{$thread->channel->slug}/{$thread->slug}", $thread->path());
     }
 
     public function test_thread_can_add_reply()
