@@ -62,7 +62,6 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        dd('foo');
         return view('threads.create');
     }
 

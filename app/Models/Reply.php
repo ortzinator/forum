@@ -17,7 +17,7 @@ class Reply extends Model
 
     protected $with = ['user', 'favorites', 'thread'];
 
-    protected $appends = ['favoritesCount', 'isFavorited'];
+    protected $appends = ['favoritesCount', 'isFavorited', 'isBest'];
 
     // protected $touches = ['thread'];
 
@@ -64,11 +64,20 @@ class Reply extends Model
 
     public function setBodyAttribute($body)
     {
-        $this->attributes['body'] = preg_replace('/@([A-zÀ-ú_\-]*)/', '<a href="/profile/$1">$0</a>', $body);
+        $this->attributes['body'] = preg_replace(
+            '/@([A-zÀ-ú_\-]*)/',
+            '<a href="/profile/$1">$0</a>',
+            $body
+        );
     }
 
     public function isBest()
     {
         return $this->thread->best_reply_id == $this->id;
+    }
+
+    public function getIsBestAttribute()
+    {
+        return $this->isBest();
     }
 }

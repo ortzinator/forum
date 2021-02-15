@@ -2,6 +2,7 @@
     <div
         :id="'reply-' + this.data.id"
         class="ml-10 my-5 p-5 border bg-gray-100 border-gray-200 rounded-lg"
+        :class="isBest ? 'bg-blue-50' : ''"
         v-cloak
     >
         <div class="flex mb-5 justify-between">
@@ -42,18 +43,30 @@
         </div>
 
         <!-- @can('update', $reply) -->
-        <div v-if="!editing && canUpdate" class="flex space-x-2">
+        <div
+            v-if="!editing && authorize('updateReply', reply)"
+            class="flex justify-between"
+        >
+            <div class="flex space-x-2">
+                <button
+                    @click="editing = true"
+                    class="bg-gray-400 px-2 py-1 text-white text-xs"
+                >
+                    Edit
+                </button>
+                <button
+                    @click="destroy"
+                    class="bg-red-500 px-2 py-1 text-white text-xs"
+                >
+                    Delete
+                </button>
+            </div>
             <button
-                @click="editing = true"
-                class="bg-gray-400 px-2 py-1 text-white text-xs"
+                @click="markBestReply"
+                class="bg-blue-500 px-2 py-1 text-white text-xs"
+                v-show="!isBest"
             >
-                Edit
-            </button>
-            <button
-                @click="destroy"
-                class="bg-red-500 px-2 py-1 text-white text-xs"
-            >
-                Delete
+                Best Reply
             </button>
         </div>
         <!-- @endcan -->
@@ -68,22 +81,21 @@ export default {
     data() {
         return {
             editing: false,
-            body: this.data.body
+            body: this.data.body,
+            isBest: this.data.isBest,
+            reply: this.data
         };
     },
 
     computed: {
-        signedIn() {
-            return window.App.signedIn;
-        },
-
-        canUpdate() {
-            return this.authorize(user => this.data.user_id == user.id);
-        },
-
         ago() {
-            return moment(this.data.created_at).fromNow();
+            return moment(this.data.created_at).fromNow() + '...';
         }
+    },
+    created() {
+        window.events.$on('best-reply-selected', id => {
+            this.isBest = id === this.reply.id;
+        });
     },
 
     methods: {
@@ -100,6 +112,7 @@ export default {
                     flash(error.response.data, 'error');
                 });
         },
+
         destroy() {
             axios
                 .delete('/replies/' + this.data.id)
@@ -110,6 +123,10 @@ export default {
                 .catch(error => {
                     flash(error.response.data, 'error');
                 });
+        },
+        markBestReply() {
+            axios.post('/replies/' + this.reply.id + '/best');
+            window.events.$emit('best-reply-selected', this.reply.id);
         }
     }
 };
