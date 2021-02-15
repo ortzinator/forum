@@ -40,16 +40,29 @@ class Reply extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function thread()
     {
         return $this->belongsTo(Thread::class, 'thread_id');
     }
 
+    /**
+     * Returns the URL path for the reply
+     * 
+     * @return string
+     */
     public function path()
     {
         return $this->thread->path() . "#reply-{$this->id}";
     }
 
+    /**
+     * Returns true if the reply was posted less than a minute ago
+     * 
+     * @return bool
+     */
     public function wasJustPublished()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());

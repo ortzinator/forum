@@ -28,5 +28,6 @@
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="REDIS_PREFIX" value="testing"/>
+        <server name="DB_FOREIGN_KEYS" value="true"/>
     </php>
 </phpunit>
