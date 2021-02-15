@@ -6,6 +6,7 @@ use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -15,14 +16,26 @@ class CreateThreadsTest extends TestCase
     public function test_authenticated_user_can_create_thread()
     {
         $this->signIn();
-        $thread = Thread::factory()->makeOne();
-
-        $this->post(route('threads.store'), $thread->toArray());
-        // dd($thread->fresh()->slug);
         
-        $this->get($thread->path())
+        $thread = Thread::factory()->make();
+
+        $response = $this->post(route('threads.store'), $thread->toArray());
+        
+        $this->get($response->headers->get('Location'))
             ->assertSee($thread->body);
     }
+
+    // function test_a_thread_with_a_title_that_ends_in_a_number_should_generate_the_proper_slug()
+    // {
+    //     $this->signIn();
+
+    //     $thread = Thread::factory()->create(['title' => 'Some Title 24']);
+
+    //     $thread = $this->postJson(route('threads.store'), $thread->toArray())->json();
+    //     dd($thread);
+
+    //     $this->assertEquals("some-title-24-{$thread['id']}", $thread['slug']);
+    // }
 
     public function test_guest_cannot_create_thread()
     {

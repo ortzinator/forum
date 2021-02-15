@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Thread extends Model
 {
@@ -101,5 +102,20 @@ class Thread extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    public function setTitleAttribute($value)
+    {
+        if (static::whereSlug($slug = $this->slugify($value))->exists()) {
+            $slug = $this->slugify($value);
+        }
+
+        $this->attributes['title'] = $value;
+        $this->attributes['slug'] = $slug;
+    }
+    
+    public function slugify($string)
+    {
+        return Str::slug($string) . '-' . Str::random(8);
     }
 }

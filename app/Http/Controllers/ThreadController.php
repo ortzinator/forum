@@ -9,7 +9,7 @@ use App\Rules\SpamFree;
 use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Redis;
 
 class ThreadController extends Controller
 {
@@ -62,6 +62,7 @@ class ThreadController extends Controller
      */
     public function create()
     {
+        dd('foo');
         return view('threads.create');
     }
 
@@ -83,10 +84,12 @@ class ThreadController extends Controller
             'user_id' => Auth::id(),
             'channel_id' => $request['channel_id'],
             'title' => $request['title'],
-            'body' => $request['body'],
-            'slug' => Str::slug($request['title'])
+            'body' => $request['body']
             ]);
-            // dd($thread->slug);
+
+        if ($request->expectsJson()) {
+            return response($thread);
+        }
             
         return redirect($thread->path())
             ->with('flash', __('Your thread was published'));

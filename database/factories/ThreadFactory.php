@@ -25,10 +25,9 @@ class ThreadFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'slug' => \Illuminate\Support\Str::slug($title = $this->faker->sentence()),
             'channel_id' => Channel::factory(),
-            'title' => $title,
-            'body' => $this->faker->paragraph()
+            'title' => $this->faker->sentence(),
+            'body' => $this->faker->paragraph(),
         ];
     }
 }
