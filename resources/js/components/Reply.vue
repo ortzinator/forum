@@ -1,6 +1,6 @@
 <template>
     <div
-        :id="'reply-' + this.data.id"
+        :id="'reply-' + this.id"
         class="ml-10 my-5 p-5 border bg-gray-100 border-gray-200 rounded-lg"
         :class="isBest ? 'bg-blue-50' : ''"
         v-cloak
@@ -8,12 +8,12 @@
         <div class="flex mb-5 justify-between">
             <div>
                 <a
-                    :href="'/profile/' + data.user.name"
-                    v-text="data.user.name"
+                    :href="'/profile/' + reply.user.name"
+                    v-text="reply.user.name"
                 ></a>
                 said <span v-text="ago"></span>
             </div>
-            <favorite v-if="signedIn" :reply="data"></favorite>
+            <favorite v-if="signedIn" :reply="reply"></favorite>
         </div>
 
         <div class="mb-5" v-cloak>
@@ -43,20 +43,19 @@
         </div>
 
         <!-- @can('update', $reply) -->
-        <div
-            v-if="!editing && authorize('updateReply', reply)"
-            class="flex justify-between"
-        >
+        <div class="flex justify-between">
             <div class="flex space-x-2">
                 <button
                     @click="editing = true"
                     class="bg-gray-400 px-2 py-1 text-white text-xs"
+                    v-if="!editing && authorize('owns', reply)"
                 >
                     Edit
                 </button>
                 <button
                     @click="destroy"
                     class="bg-red-500 px-2 py-1 text-white text-xs"
+                    v-if="!editing && authorize('owns', reply)"
                 >
                     Delete
                 </button>
@@ -65,6 +64,7 @@
                 @click="markBestReply"
                 class="bg-blue-500 px-2 py-1 text-white text-xs"
                 v-show="!isBest"
+                v-if="authorize('owns', reply.thread)"
             >
                 Best Reply
             </button>
@@ -77,31 +77,31 @@ import Favorite from './Favorite.vue';
 import moment from 'moment';
 export default {
     components: { Favorite },
-    props: ['data'],
+    props: ['reply'],
     data() {
         return {
             editing: false,
-            body: this.data.body,
-            isBest: this.data.isBest,
-            reply: this.data
+            body: this.reply.body,
+            isBest: this.reply.isBest,
+            id: this.reply.id
         };
     },
 
     computed: {
         ago() {
-            return moment(this.data.created_at).fromNow() + '...';
+            return moment(this.reply.created_at).fromNow() + '...';
         }
     },
     created() {
         window.events.$on('best-reply-selected', id => {
-            this.isBest = id === this.reply.id;
+            this.isBest = id === this.id;
         });
     },
 
     methods: {
         update() {
             axios
-                .patch('/replies/' + this.data.id, {
+                .patch('/replies/' + this.id, {
                     body: this.body
                 })
                 .then(data => {
@@ -115,9 +115,9 @@ export default {
 
         destroy() {
             axios
-                .delete('/replies/' + this.data.id)
+                .delete('/replies/' + this.id)
                 .then(data => {
-                    this.$emit('deleted', this.data.id);
+                    this.$emit('deleted', this.id);
                     flash('Your reply has been deleted');
                 })
                 .catch(error => {
@@ -125,8 +125,8 @@ export default {
                 });
         },
         markBestReply() {
-            axios.post('/replies/' + this.reply.id + '/best');
-            window.events.$emit('best-reply-selected', this.reply.id);
+            axios.post('/replies/' + this.id + '/best');
+            window.events.$emit('best-reply-selected', this.id);
         }
     }
 };
