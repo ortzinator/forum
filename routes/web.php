@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BestRepliesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\ReplyController;
@@ -37,6 +38,7 @@ Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->na
 Route::post('/threads', [ThreadController::class, 'store'])->name('threads.store');
 Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
 
+//Thread subscriptions
 Route::post('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'store'])->middleware('auth');
 Route::delete('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'destroy'])->middleware('auth');
 
@@ -45,6 +47,8 @@ Route::get('/threads/{channel}/{thread}/replies', [ReplyController::class, 'inde
 Route::post('/threads/{channel}/{thread}/replies', [ReplyController::class, 'store']);
 Route::delete('/replies/{reply}', [ReplyController::class, 'destroy']);
 Route::patch('/replies/{reply}', [ReplyController::class, 'update']);
+
+Route::post('/replies/{reply}/best', [BestRepliesController::class, 'store'])->name('best-replies.store');
 
 //Favorites
 Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store']);

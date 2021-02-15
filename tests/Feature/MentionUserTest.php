@@ -14,9 +14,9 @@ class MentionUserTest extends TestCase
 
     public function test_mentioned_users_in_a_reply_are_notified()
     {
-        $john = User::factory()->make(['name' => 'JohnDoe']);
+        $john = User::factory()->create(['name' => 'JohnDoe']);
 
-        $this->signIn($john->toArray());
+        $this->signIn($john);
 
         $jane = User::factory()->create(['name' => 'JaneDoe']);
 

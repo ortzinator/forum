@@ -31,9 +31,10 @@ abstract class TestCase extends BaseTestCase
      * 
      * @return $this
      */
-    public function signIn($options = [])
+    public function signIn($user = null)
     {
-        return $this->actingAs(\App\Models\User::factory()->create($options));
+        $user = $user ?: \App\Models\User::factory()->create();
+        return $this->actingAs($user);
     }
 
     /**

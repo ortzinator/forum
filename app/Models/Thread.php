@@ -118,4 +118,14 @@ class Thread extends Model
     {
         return Str::slug($string) . '-' . Str::random(8);
     }
+
+    /**
+     * @param Reply $reply
+     * 
+     * @return void
+     */
+    public function markBestReply($reply)
+    {
+        $this->update(['best_reply_id' => $reply->id]);
+    }
 }

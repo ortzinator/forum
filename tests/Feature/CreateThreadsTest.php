@@ -68,7 +68,8 @@ class CreateThreadsTest extends TestCase
 
     public function test_auth_users_must_first_verify_email_before_creating_thread()
     {
-        $this->publishThread([], ['email_verified_at' => NULL])
+        $user = User::factory()->create(['email_verified_at' => NULL]);
+        $this->publishThread([], $user)
             ->assertRedirect('/verify-email');
     }
 

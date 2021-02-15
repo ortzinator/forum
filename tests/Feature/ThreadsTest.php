@@ -9,6 +9,7 @@ use Tests\TestCase;
 use App\Models\Thread;
 use App\Models\Reply;
 use App\Models\Channel;
+use App\Models\User;
 
 class ThreadsTest extends TestCase
 {
@@ -66,7 +67,7 @@ class ThreadsTest extends TestCase
 
     public function test_a_user_can_filter_threads_by_username()
     {
-        $this->signIn(['name' => 'JohnDoe']);
+        $this->signIn(User::factory()->state(['name' => 'JohnDoe'])->create());
 
         $threadByJohn = Thread::factory()->create(['user_id' => Auth::user()->id]);
         $threadNotByJohn = Thread::factory()->create();
@@ -99,7 +100,7 @@ class ThreadsTest extends TestCase
     public function test_auth_users_can_delete_a_thread()
     {
         $userId = 42;
-        $this->signIn(['id' => $userId]);
+        $this->signIn(User::factory()->state(['id' => $userId])->create());
         $thread = Thread::factory()->create(['user_id' => $userId]);
         $reply = Reply::factory()->create(['thread_id' => $thread->id]);
 
