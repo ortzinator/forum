@@ -76,7 +76,7 @@ class ThreadController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
+            'title' => ['required', new SpamFree],
             'body' => ['required', new SpamFree],
             'channel_id' => 'required|exists:channels,id',
             'g-recaptcha-response' => ['required', new Recaptcha]
@@ -104,7 +104,7 @@ class ThreadController extends Controller
      * @param  \App\Models\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread, Trending $trending)
+    public function show($channel, Thread $thread, Trending $trending)
     {
         if (Auth::check()) {
             Auth::user()->read($thread);
@@ -131,8 +131,15 @@ class ThreadController extends Controller
         return response([], 204);
     }
 
-    public function update($channelId, Thread $thread)
+    public function update($channel, Thread $thread)
     {
+        $this->authorize('update', $thread);
         
+        $thread->update(request()->validate([
+            'title' => ['required', new SpamFree],
+            'body' => ['required', new SpamFree],
+        ]));
+
+        return $thread;
     }
 }

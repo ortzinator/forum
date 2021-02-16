@@ -6,7 +6,9 @@ use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Monolog\SignalHandler;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
