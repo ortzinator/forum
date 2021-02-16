@@ -17,9 +17,7 @@ class LockThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = Thread::factory()->create();
-
-        $thread->lock();
+        $thread = Thread::factory()->locked()->create();
 
         $this->post($thread->path() . '/replies', [
             'body' => 'FooBar',
@@ -37,7 +35,7 @@ class LockThreadsTest extends TestCase
 
         $this->post(route('locked-threads.store', $thread), [])->assertStatus(403);
 
-        $this->assertFalse(!! $thread->fresh()->locked);
+        $this->assertFalse($thread->fresh()->locked);
     }
 
     public function test_admins_can_lock_threads()
@@ -46,8 +44,19 @@ class LockThreadsTest extends TestCase
 
         $thread = Thread::factory()->for(Auth::user())->create();
 
-        $this->post(route('locked-threads.store', $thread), [])->assertStatus(200);
+        $this->post(route('locked-threads.store', $thread), []);
 
-        $this->assertTrue(!! $thread->fresh()->locked);
+        $this->assertTrue($thread->fresh()->locked);
+    }
+
+    public function test_admins_can_unlock_threads()
+    {
+        $this->signIn(User::factory()->admin()->create());
+
+        $thread = Thread::factory()->for(Auth::user())->locked()->create();
+
+        $this->delete(route('locked-threads.destroy', $thread), []);
+
+        $this->assertFalse($thread->fresh()->locked);
     }
 }

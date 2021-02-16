@@ -43,6 +43,9 @@ Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'
 Route::post('/locked-threads/{thread}', [LockedThreadsController::class, 'store'])
     ->middleware(['admin'])
     ->name('locked-threads.store');
+Route::delete('/locked-threads/{thread}', [LockedThreadsController::class, 'destroy'])
+    ->middleware(['admin'])
+    ->name('locked-threads.destroy');
 
 //Thread subscriptions
 Route::post('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'store'])->middleware('auth');

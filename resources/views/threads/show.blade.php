@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     
-    <thread-view :init-replies-count="{{ $thread->replies_count }}" inline-template>
+    <thread-view :thread="{{ $thread }}" inline-template>
         <div class="flex flex-row">
             <div id="thread" class="flex flex-grow flex-col px-5">
                 <div id="threadop" class="bg-gray-200 p-5 border border-gray-300 rounded-lg">
@@ -33,7 +33,12 @@
             <div id="thread-meta" class="flex-none w-64 h-64 border border-gray-200 p-5 rounded-lg">
                 <p class="mb-2">Thread was published {{ $thread->created_at->diffForHumans() }}
                     and has <span v-text="repliesCount"></span> {{ Str::plural('reply', $thread->replies_count) }}</p>
-                <subscribe-button :active="{{ json_encode($thread->isSubscribed) }}"></subscribe-button>
+                <subscribe-button :active="{{ json_encode($thread->isSubscribed) }}" v-if="signedIn"></subscribe-button>
+                <x-button class="bg-red-500 mt-5"
+                    v-if="authorize('isAdmin')"
+                    @click="toggleLock"
+                    v-text="locked ? 'Unlock' : 'Lock'">
+                </x-button>
             </div>
         </div>
     </thread-view>

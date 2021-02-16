@@ -7,7 +7,10 @@
         <paginator :dataSet="dataSet" @changed="fetch"></paginator>
 
         <div id="reply-form" class="my-5 p-5 border border-gray-200 rounded-lg">
-            <new-reply @created="add"></new-reply>
+            <div v-if="$parent.locked">
+                This thread has been locked. No more replies are allowed.
+            </div>
+            <new-reply @created="add" v-else></new-reply>
         </div>
     </div>
 </template>

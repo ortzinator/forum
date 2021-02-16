@@ -31,4 +31,13 @@ class ThreadFactory extends Factory
             'locked' => false
         ];
     }
+
+    public function locked()
+    {
+        return $this->state(function () {
+            return [
+                'locked' => true
+            ];
+        });
+    }
 }
