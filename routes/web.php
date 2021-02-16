@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\LockedThreadsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThreadSubscriptionController;
 use App\Http\Controllers\UserNotificationsController;
@@ -35,8 +36,13 @@ Route::get('/threads/create', [ThreadController::class, 'create'])->name('thread
 Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
 Route::get('/threads/{channel}', [ThreadController::class, 'index'])->name('threads.index.channel');
 Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+// Route::patch('/threads/{channel}/{thread}', [ThreadController::class, 'update'])->name('threads.update');
 Route::post('/threads', [ThreadController::class, 'store'])->name('threads.store');
 Route::delete('/threads/{channel}/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
+
+Route::post('/locked-threads/{thread}', [LockedThreadsController::class, 'store'])
+    ->middleware(['admin'])
+    ->name('locked-threads.store');
 
 //Thread subscriptions
 Route::post('/threads/{channel}/{thread}/subscriptions', [ThreadSubscriptionController::class, 'store'])->middleware('auth');

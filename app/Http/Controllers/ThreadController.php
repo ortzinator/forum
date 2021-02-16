@@ -127,4 +127,9 @@ class ThreadController extends Controller
 
         return response([], 204);
     }
+
+    public function update($channelId, Thread $thread)
+    {
+        
+    }
 }
