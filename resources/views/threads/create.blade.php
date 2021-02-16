@@ -1,4 +1,8 @@
 <x-app-layout>
+    @section("head")
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    @endsection
+
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             Create Thread
@@ -30,6 +34,8 @@
                 <label for="body"></label>
                 <textarea name="body" id="body" rows="5" placeholder="What would you like to say?">{{ old('body') }}</textarea>
             </div>
+
+            <div class="g-recaptcha" data-sitekey="6LddxFoaAAAAAKgbMQHBdqJhMKcPUJWKgs0FNAW7"></div>
 
             <button type="submit" class="bg-gray-500 hover:bg-blue-500 text-white rounded-lg px-5 py-2">Submit</button>
         </form>

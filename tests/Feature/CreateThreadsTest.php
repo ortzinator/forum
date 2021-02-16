@@ -6,12 +6,24 @@ use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Http::fake(function($request){
+            if ($request['response'] == 'invalid') {
+                return Http::response(['success' => false]);
+            }
+            return Http::response(['success' => true]);
+        });
+    }
     
     public function test_authenticated_user_can_create_thread()
     {
@@ -19,7 +31,7 @@ class CreateThreadsTest extends TestCase
         
         $thread = Thread::factory()->make();
 
-        $response = $this->post(route('threads.store'), $thread->toArray());
+        $response = $this->post(route('threads.store'), $thread->toArray() + ['g-recaptcha-response' => 'token']);
         
         $this->get($response->headers->get('Location'))
             ->assertSee($thread->body);
@@ -73,11 +85,17 @@ class CreateThreadsTest extends TestCase
             ->assertRedirect('/verify-email');
     }
 
-    public function publishThread($threadOverrides = [], $userOverrides = [])
+    public function publishThread($threadOverrides = [], $user = null)
     {
-        $this->withExceptionHandling()->signIn($userOverrides);
+        $this->withExceptionHandling()->signIn($user);
 
         $thread = Thread::factory()->makeOne($threadOverrides);
         return $this->post(route('threads.store'), $thread->toArray());
+    }
+
+    public function test_a_thread_requires_recaptcha_verification()
+    {
+        $this->publishThread(['g-recaptcha-response' => 'invalid'])
+            ->assertSessionHasErrors('g-recaptcha-response');
     }
 }

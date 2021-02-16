@@ -24,6 +24,8 @@
                 'user' => Auth::user(),
             ]) !!}
         </script>
+
+        @yield('head')
     </head>
     <body class="font-sans antialiased">
         <div id="app" class="min-h-screen bg-gray-100">

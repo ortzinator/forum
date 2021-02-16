@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Channel;
 use App\Models\Thread;
 use App\Models\User;
+use App\Rules\Recaptcha;
 use App\Rules\SpamFree;
 use App\Trending;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redis;
 
 class ThreadController extends Controller
@@ -76,7 +78,8 @@ class ThreadController extends Controller
         $request->validate([
             'title' => 'required',
             'body' => ['required', new SpamFree],
-            'channel_id' => 'required|exists:channels,id'
+            'channel_id' => 'required|exists:channels,id',
+            'g-recaptcha-response' => ['required', new Recaptcha]
         ]);
 
         $thread = Thread::create([
