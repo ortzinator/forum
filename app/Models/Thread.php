@@ -110,12 +110,15 @@ class Thread extends Model
 
     public function setTitleAttribute($value)
     {
-        if (static::whereSlug($slug = $this->slugify($value))->exists()) {
-            $slug = $this->slugify($value);
-        }
-
         $this->attributes['title'] = $value;
-        $this->attributes['slug'] = $slug;
+
+        if (empty($this->attributes['slug'])) { //Ensure slug is only set once
+            if (static::whereSlug($slug = $this->slugify($value))->exists()) {
+                $slug = $this->slugify($value);
+            }
+    
+            $this->attributes['slug'] = $slug;
+        }
     }
     
     public function slugify($string)

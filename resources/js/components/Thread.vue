@@ -8,7 +8,12 @@ export default {
     data() {
         return {
             repliesCount: this.thread.replies_count,
-            locked: this.thread.locked
+            locked: this.thread.locked,
+            editing: false,
+            form: {
+                title: this.thread.title,
+                body: this.thread.body
+            }
         };
     },
 
@@ -18,6 +23,20 @@ export default {
                 '/locked-threads/' + this.thread.slug
             );
             this.locked = !this.locked;
+        },
+        update() {
+            let uri = `/threads/${this.thread.channel.slug}/${this.thread.slug}`;
+            axios.patch(uri, this.form).then(() => {
+                flash('Your thread was updated');
+                this.editing = false;
+            });
+        },
+        cancel() {
+            this.form = {
+                title: this.thread.title,
+                body: this.thread.body
+            };
+            this.editing = false;
         }
     },
 

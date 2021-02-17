@@ -177,4 +177,17 @@ class ThreadTest extends TestCase
 
         $this->assertTrue($this->thread->locked);
     }
+
+    public function test_the_slug_is_only_set_once()
+    {
+        $thread = Thread::factory()->create();
+
+        $slug = $thread->slug;
+
+        $thread->title = 'Something new';
+        $thread->save();
+
+        $this->assertEquals($slug, $thread->fresh()->slug);
+        $this->assertEquals('Something new', $thread->fresh()->title);
+    }
 }

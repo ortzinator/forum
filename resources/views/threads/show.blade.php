@@ -1,31 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ $thread->title }}
+            Threads >> {{ $thread->channel->name }}
         </h2>
     </x-slot>
     
     <thread-view :thread="{{ $thread }}" inline-template>
         <div class="flex flex-row">
-            <div id="thread" class="flex flex-grow flex-col px-5">
-                <div id="threadop" class="bg-gray-200 p-5 border border-gray-300 rounded-lg">
-                    <div class="flex justify-between mb-8">
-                        <div class="flex items-center space-x-4">
-                            <x-avatar class="border border-gray-300 shadow-md" :user="$thread->user"/>
-                            <a href="{{ route('profile', $thread->user->name) }}" class="text-2xl">{{ $thread->user->name }}</a>
-                        </div>
-                        @can('update', $thread)    
-                            <div class="">
-                                <form action="{{ $thread->path() }}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit">Delete Thread</button>
-                                </form>
-                            </div>
-                        @endcan
-                    </div>
-                    <div>{{ $thread->body }}</div>
-                </div>
+            <div id="thread" class="flex flex-grow flex-col px-5" v-cloak>
+                @include('threads._OP')
 
                 <replies :data="{{$thread->replies}}" @added="repliesCount++" @removed="repliesCount--"></replies>
 
