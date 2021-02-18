@@ -57,4 +57,11 @@ class ReplyTest extends TestCase
 
         $this->assertTrue($reply->fresh()->isBest());
     }
+
+    public function test_a_reply_body_is_sanitized()
+    {
+        $thread = Reply::factory()->make(['body' => '<a href="#" onClick="alert(\'boo\')">BOO</a>']);
+
+        $this->assertEquals('<a href="#">BOO</a>', $thread->body);
+    }
 }

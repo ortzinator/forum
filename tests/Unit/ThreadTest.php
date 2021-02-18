@@ -190,4 +190,11 @@ class ThreadTest extends TestCase
         $this->assertEquals($slug, $thread->fresh()->slug);
         $this->assertEquals('Something new', $thread->fresh()->title);
     }
+
+    public function test_a_thread_body_is_sanitized()
+    {
+        $thread = Thread::factory()->make(['body' => '<a href="#" onClick="alert(\'boo\')">BOO</a>']);
+
+        $this->assertEquals('<a href="#">BOO</a>', $thread->body);
+    }
 }
