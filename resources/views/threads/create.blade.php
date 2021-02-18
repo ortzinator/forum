@@ -32,7 +32,8 @@
 
             <div class="flex flex-col">
                 <label for="body"></label>
-                <textarea name="body" id="body" rows="5" placeholder="What would you like to say?">{{ old('body') }}</textarea>
+                {{-- <textarea name="body" id="body" rows="5" placeholder="What would you like to say?">{{ old('body') }}</textarea> --}}
+                <wysiwyg name="body" :value="form.body"></wysiwyg>
             </div>
 
             <div class="g-recaptcha" data-sitekey="6LddxFoaAAAAAKgbMQHBdqJhMKcPUJWKgs0FNAW7"></div>

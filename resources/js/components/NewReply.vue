@@ -3,14 +3,11 @@
         <!-- @auth -->
         <div v-if="signedIn">
             <label for="body" hidden>Reply:</label>
-            <textarea
-                class="w-full mb-5"
+            <wysiwyg
                 name="body"
-                id="body"
-                rows="5"
-                placeholder="What do you want to say?"
                 v-model="body"
-            ></textarea>
+                placeholder="What do you want to say?"
+            ></wysiwyg>
             <button
                 class="bg-gray-400 hover:bg-blue-500 text-white rounded-lg px-5 py-2"
                 @click="addReply"
@@ -69,6 +66,11 @@ export default {
                 .catch(error => {
                     flash(error.response.data, 'error');
                 });
+        }
+    },
+    watch: {
+        body(value) {
+            // console.log(value);
         }
     }
 };

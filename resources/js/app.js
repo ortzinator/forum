@@ -8,6 +8,7 @@ import Paginator from './components/Paginator.vue';
 import UserNotifications from './components/UserNotifications.vue';
 import AvatarForm from './components/AvatarForm.vue';
 import Search from './components/Search.vue';
+import Wysiwyg from './components/Wysiwyg.vue';
 
 import InstantSearch from 'vue-instantsearch';
 
@@ -37,6 +38,7 @@ Vue.component('paginator', Paginator);
 Vue.component('user-notifications', UserNotifications);
 Vue.component('avatar-form', AvatarForm);
 Vue.component('search', Search);
+Vue.component('wysiwyg', Wysiwyg);
 
 Vue.component('thread-view', Thread);
 

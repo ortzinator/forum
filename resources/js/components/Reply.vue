@@ -19,14 +19,19 @@
         <div class="mb-5" v-cloak>
             <div v-if="editing" class="v-cloak--hidden">
                 <form @submit.prevent="update">
-                    <textarea
+                    <!-- <textarea
                         name=""
                         id=""
                         rows="10"
                         class="w-full"
                         v-model="body"
                         required
-                    ></textarea>
+                    ></textarea> -->
+                    <wysiwyg
+                        name="body"
+                        v-model="body"
+                        placeholder="What do you want to say?"
+                    ></wysiwyg>
                     <button
                         @click="editing = false"
                         class="bg-gray-400 px-2 py-1 text-white text-xs"

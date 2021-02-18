@@ -5,7 +5,10 @@
         @can('update', $thread)
         @endcan
     </div>
-    <div class="mb-5"><textarea name="body" id="" rows="10" class="w-full" v-model="form.body"></textarea></div>
+    <div class="mb-5 bg-white p-5">
+        {{-- <textarea name="body" id="" rows="10" class="w-full" v-model="form.body"></textarea> --}}
+        <wysiwyg v-model="form.body"></wysiwyg>
+    </div>
     <div>
         <button class="bg-blue-400 px-2 py-1 text-white text-xs" @click="update">Update</button>
         <button class="bg-gray-400 px-2 py-1 text-white text-xs" @click="cancel">Cancel</button>
@@ -22,7 +25,7 @@
             <a href="{{ route('profile', $thread->user->name) }}" class="text-2xl">{{ $thread->user->name }}</a>
         </div>
     </div>
-    <div class="mb-5" v-text="form.body"></div>
+    <div class="mb-5 prose" v-html="form.body"></div>
     <div v-if="authorize('owns', thread)">
         <button @click="editing = true">Edit</button>
     </div>

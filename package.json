@@ -29,6 +29,7 @@
         "algoliasearch": "^4.8.5",
         "instantsearch.css": "^7.4.5",
         "tributejs": "^5.1.3",
+        "trix": "^1.3.1",
         "vue-instantsearch": "^3.4.3"
     }
 }
