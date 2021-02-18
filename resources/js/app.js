@@ -7,6 +7,9 @@ import Thread from './components/Thread.vue';
 import Paginator from './components/Paginator.vue';
 import UserNotifications from './components/UserNotifications.vue';
 import AvatarForm from './components/AvatarForm.vue';
+import Search from './components/Search.vue';
+
+import InstantSearch from 'vue-instantsearch';
 
 window.Vue = Vue;
 
@@ -33,8 +36,11 @@ Vue.component('flash', Flash);
 Vue.component('paginator', Paginator);
 Vue.component('user-notifications', UserNotifications);
 Vue.component('avatar-form', AvatarForm);
+Vue.component('search', Search);
 
 Vue.component('thread-view', Thread);
+
+Vue.use(InstantSearch);
 
 new Vue({
     el: '#app'

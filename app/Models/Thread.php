@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 class Thread extends Model
 {
     use HasFactory;
     use RecordsActivity;
+    use Searchable;
 
     protected $guarded = [];
 
@@ -134,5 +136,10 @@ class Thread extends Model
     public function markBestReply($reply)
     {
         $this->update(['best_reply_id' => $reply->id]);
+    }
+
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path' => $this->path()];
     }
 }

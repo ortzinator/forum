@@ -15,9 +15,14 @@
             </div>
             {{ $threads->withQueryString()->links() }}
         </div>
-        @if (count($trending))
-            <div>
-                <div class="border p-5 w-60">
+        <div>
+            <div class="border p-5 w-60">
+                <div>
+                    <form action="/threads/search">
+                        <input type="text" name="q" placeholder="Search..." class="mb-5">
+                    </form>
+                </div>
+                @if (count($trending))
                     <h3 class="text-xl mb-3">Trending Threads</h3>
                     <ul class="text-sm list-none divide-y-2 divide-gray-100">
                         @foreach ($trending as $thread)
@@ -26,8 +31,8 @@
                             </li>
                         @endforeach
                     </ul>
-                </div>
+                @endif
             </div>
-        @endif
+        </div>
     </div>
 </x-app-layout>

@@ -29,5 +29,6 @@
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="REDIS_PREFIX" value="testing"/>
         <server name="DB_FOREIGN_KEYS" value="true"/>
+        <server name="SCOUT_DRIVER" value="null"/>
     </php>
 </phpunit>

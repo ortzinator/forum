@@ -7,6 +7,7 @@ use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\LockedThreadsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ThreadSubscriptionController;
 use App\Http\Controllers\UserNotificationsController;
 
@@ -31,9 +32,12 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
+Route::view('scan', 'scan');
+
 //Threads
 Route::get('/threads/create', [ThreadController::class, 'create'])->name('threads.create');
 Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
+Route::get('/threads/search', [SearchController::class, 'show'])->name('search');
 Route::get('/threads/{channel}', [ThreadController::class, 'index'])->name('threads.index.channel');
 Route::get('/threads/{channel}/{thread}', [ThreadController::class, 'show'])->name('threads.show');
 Route::patch('/threads/{channel}/{thread}', [ThreadController::class, 'update'])->name('threads.update');
