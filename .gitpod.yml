@@ -1,6 +1,5 @@
 # List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
 tasks:
-  - name: laravel
   - init: >
       composer install &&
       cp .env.example .env &&
