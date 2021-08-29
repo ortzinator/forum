@@ -3,12 +3,12 @@ tasks:
   - init: >
       composer install &&
       cp .env.example .env &&
-      vendor/bin/sail up -d &&
+      APP_PORT=8080 vendor/bin/sail up -d &&
       vendor/bin/sail npm install &&
       npm run dev &&
       vendor/bin/sail artisan key:generate &&
       gp sync-done laravel
-    command: vendor/bin/sail up -d
+    command: APP_PORT=8080 vendor/bin/sail up -d
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
