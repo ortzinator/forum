@@ -1,0 +1,20 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - name: laravel
+  - init: >
+      alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail' &&
+      composer install &&
+      sail up -d &&
+      sail npm install &&
+      npm run dev &&
+      sail artisan key:generate &&
+      gp sync-done laravel
+    command: sail up -d
+  
+  - name: mix
+  - command: gp sync-await laravel && npx mix watch
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 8080
+    onOpen: open-preview
